@@ -10,7 +10,6 @@ class LLMGemini:
         self.client = genai.Client(api_key=Env.get('GOOGLE_API_KEY'))
 
     def generate_text(self, prompt: str) -> str:
-
         response = self.client.models.generate_content(
             model="gemini-2.5-flash",
             contents = f"{prompt}",
@@ -18,3 +17,10 @@ class LLMGemini:
         )
         return response.text
     
+    def embed_text(self, text: str):
+        response = self.client.models.embed_content(
+            model= "gemini-embedding-001",
+            contents=[text],
+            config=genai.types.EmbedContentConfig(output_dimensionality=1536)
+        )
+        return response.embeddings[0].values
