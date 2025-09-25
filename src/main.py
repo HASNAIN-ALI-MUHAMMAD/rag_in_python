@@ -2,7 +2,7 @@ import asyncio
 from src.db.postgres import PostgresDB
 from src.llm.gemini import LLMGemini
 from src.db.vmongo import VMongo
-from src.filehandling.files import FIleReader
+from filehandling.file_reader import FIleReader
 
 async def main():
     # llm = LLMGemini()

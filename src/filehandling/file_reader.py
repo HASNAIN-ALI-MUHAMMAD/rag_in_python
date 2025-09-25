@@ -52,3 +52,8 @@ class FIleReader:
         except Exception as e:
             print(f"Error reading DOCX file.\n{e}")
             return None
+        
+
+
+class FIleSearcher:
+    
