@@ -29,7 +29,8 @@ class TextSplitter:
                     "path": file_metadata.get("path","unknown"),
                     "type": file_metadata.get("type","unknown"),
                     "chunk_size": len(t),
-                    "chunk_index": i+1
+                    "chunk_index": i+1,
+                    "total_file_chunks": len(texts)
                 }
             }
             arr.append(obj)

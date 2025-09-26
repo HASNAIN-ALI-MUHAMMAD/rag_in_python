@@ -1,16 +1,12 @@
-import os
 from docx import Document
 from pypdf import PdfReader
-from file_searcher import FIleSearcher
 
 
 class FIleReader:
 
     def read(self,filepath:str,ext:str)->str:
-        PLAIN_EXTS = ['txt','md','log','py','js','html','css','java',"env"]
-        # file_path = os.path.join("/home/hasnain/D/code/python/rag_pj",filename)
+        PLAIN_EXTS = ['txt','md','log','py','js','html','css','java',"env","json","c","c*","js*","ts*"]
 
-        print(f"File to read: {filepath}")
         if ext in PLAIN_EXTS:
             return self.read_plain(filepath)
         elif ext == 'pdf':
@@ -26,7 +22,12 @@ class FIleReader:
     def read_plain(self,file_path: str) -> str:
         try:
             with open(file_path, 'r', encoding='utf-8') as file:
-                return file.read()
+                lines = file.readlines()
+                text = ""
+                for l in lines:
+                    if l.strip() != "" and l is not None:
+                        text += l
+                return text
         except Exception as e:
             print(f"Error reading plain text file:\n{e}")
             return e
@@ -36,7 +37,8 @@ class FIleReader:
             reader = PdfReader(file_path)
             text = ''
             for page in reader.pages:
-                text += page.extract_text() + '\n'
+                if page.extract_text() is not None and page.extract_text() != "":
+                    text += page.extract_text() + '\n'
             return text
         except Exception as e:
             print(f"Error reading PDF file.\n{e}")
@@ -47,7 +49,7 @@ class FIleReader:
             doc = Document(file_path)
             text = ''
             for para in doc.paragraphs:
-                if para.text != "":
+                if para.text != "" and para.text is not None:
                     text += para.text + '\n'
             return text
         except Exception as e:
@@ -56,17 +58,4 @@ class FIleReader:
         
 
 if __name__ == "__main__":
-    fs =FIleSearcher()
-    filename = input("Enter filename to search: ")
-    dir = input("Enter directory to search in (or leave blank for '/home/{user}/*'): ")
-    print(f"Searching files...\nFilename: {filename} ||     Dir: {dir}\n")
-    files= fs.search_files(filename,dir)
-    print(f"Found {len(files)} files.")
-    print(files)
-
-    if len(files) == 0:
-        exit(0)
-    filepath = files[0].get("path")
-    fr = FIleReader()
-    pdf  = fr.read(filepath,files[0].get("ext"))
-    print(pdf.split("\n")[0:100])
+    exit()

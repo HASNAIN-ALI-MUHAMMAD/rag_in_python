@@ -8,7 +8,7 @@ class FIleSearcher:
         return filename.split('.')[-1].lower()
 
     def search_files(self, filename: str ,dir:str = ""):
-        if filename.startswith("*"):
+        if filename.startswith(("*",".")) or filename.endswith("*"):
             return self.search_globs(filename,dir)
         dir_path = Path("/home",str(self.get_user()),dir)
 
@@ -26,7 +26,7 @@ class FIleSearcher:
         dir_path = Path("/home",str(self.get_user()),dir)
 
         matched_files = []
-        for path in dir_path.rglob(pattern):
+        for path in dir_path.rglob(f"*{pattern}"):
             if path.is_file():
                 matched_files.append({
                     "path" : str(path),
@@ -43,10 +43,6 @@ class FIleSearcher:
     
 
 
-## test runs
 
-
-# if __name__ == "__main__":
-#     fs = FIleSearcher()
-#     ddir = fs.search_files("test.c","D")
-#     print(ddir)
+if __name__ == "__main__":
+    exit()
